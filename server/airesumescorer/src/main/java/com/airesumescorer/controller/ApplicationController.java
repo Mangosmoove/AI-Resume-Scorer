@@ -3,6 +3,13 @@ package com.airesumescorer.controller;
 import com.airesumescorer.model.Job;
 import com.airesumescorer.model.Application;
 import com.airesumescorer.dto.ScoreRequestDTO;
+import com.airesumescorer.repository.ApplicationRepository;
+import com.airesumescorer.repository.JobRepository;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api")
