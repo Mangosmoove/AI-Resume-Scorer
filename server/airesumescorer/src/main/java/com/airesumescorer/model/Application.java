@@ -16,13 +16,13 @@ public class Application {
     @Column(nullable=false, updatable = false)
     private String sessionToken;
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String resumeText;
 
     @Column(nullable = false)
     private int aiScore;
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String aiFeedback;
 
     @Column(nullable = false, updatable = false)
