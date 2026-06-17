@@ -2,6 +2,7 @@ package com.airesumescorer.controller;
 
 import com.airesumescorer.model.Job;
 import com.airesumescorer.model.Application;
+import com.airesumescorer.dto.CheckDTO;
 import com.airesumescorer.dto.ScoreRequestDTO;
 import com.airesumescorer.dto.ScoreResultDTO;
 import com.airesumescorer.repository.ApplicationRepository;
@@ -57,11 +58,20 @@ public class ApplicationController {
         try {
             String aiRaw = openAIService.scoreResume(resumeText, jobDescription);
             ScoreResultDTO result = objectMapper.readValue(aiRaw, ScoreResultDTO.class);
+
+            // recalculate parent passed based on children bc groq has issues w calculation
+            result.getSections().forEach((categoryName, category) -> {
+                boolean allPassed = category.getChecks().values()
+                        .stream()
+                        .allMatch(CheckDTO::isPassed);
+                category.setPassed(allPassed);
+            });
+
             app.setAiScore(result.getScore());
-            app.setAiFeedback(result.getFeedback());
+            app.setAiSections(objectMapper.writeValueAsString(result.getSections()));
         } catch (Exception e) {
             app.setAiScore(0);
-            app.setAiFeedback("Scoring failed: " + e.getMessage());
+            app.setAiSections("{\"error\": \"Scoring failed: " + e.getMessage() + "\"}");
         }
 
         Application savedApp = applicationRepository.save(app);

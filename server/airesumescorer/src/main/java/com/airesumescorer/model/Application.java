@@ -23,65 +23,31 @@ public class Application {
     private int aiScore;
 
     @Column(nullable = false, columnDefinition = "TEXT")
-    private String aiFeedback;
+    private String aiSections;
 
     @Column(nullable = false, updatable = false)
     private LocalDateTime submittedAt;
 
     @PrePersist
-    protected void onCreate() {
-        submittedAt = LocalDateTime.now();
-    } // gets time automatically before row
+    protected void onCreate() { submittedAt = LocalDateTime.now(); } // gets time automatically before row
 
-    public Long getId() {
-        return id;
-    }
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    public Job getJob() { return job; }
+    public void setJob(Job job) { this.job = job; }
 
-    public Job getJob() {
-        return job;
-    }
+    public String getSessionToken() { return sessionToken; }
+    public void setSessionToken(String sessionToken) { this.sessionToken = sessionToken; }
 
-    public void setJob(Job job) {
-        this.job = job;
-    }
+    public String getResumeText() { return resumeText; }
+    public void setResumeText(String resumeText) { this.resumeText = resumeText; }
 
-    public String getSessionToken() {
-        return sessionToken;
-    }
+    public int getAiScore() { return aiScore; }
+    public void setAiScore(int aiScore) { this.aiScore = aiScore; }
 
-    public void setSessionToken(String sessionToken) {
-        this.sessionToken = sessionToken;
-    }
+    public String getAiSections() { return aiSections; }
+    public void setAiSections(String aiSections) { this.aiSections = aiSections; }
 
-    public String getResumeText() {
-        return resumeText;
-    }
-
-    public void setResumeText(String resumeText) {
-        this.resumeText = resumeText;
-    }
-
-    public int getAiScore() {
-        return aiScore;
-    }
-
-    public void setAiScore(int aiScore) {
-        this.aiScore = aiScore;
-    }
-
-    public String getAiFeedback() {
-        return aiFeedback;
-    }
-
-    public void setAiFeedback(String aiFeedback) {
-        this.aiFeedback = aiFeedback;
-    }
-
-    public LocalDateTime getSubmittedAt() {
-        return submittedAt;
-    }
+    public LocalDateTime getSubmittedAt() { return submittedAt; }
 }

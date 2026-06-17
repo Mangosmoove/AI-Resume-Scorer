@@ -18,22 +18,72 @@ public class OpenAIService {
 
     public String scoreResume(String resumeText, String jobDescription) {
         String prompt = """
-    You are a friendly and encouraging resume coach.
+    You are a strict ATS (Applicant Tracking System) scanner. You do not give encouragement
+    or coaching — you parse and score resumes the same way automated hiring software does.
+    Address the candidate directly using "you" and "your" only when giving feedback in notes.
     
-    Review the resume against the job description and score it from 0-100.
-    Address the candidate directly using "you" and "your". Be warm, constructive,
-    and motivating — even if the score is low, focus on what they can do to improve.
+    Score the resume from 0-100 based on how well it would perform in a real ATS system.
     
-    Cover:
-    - Why you gave them the score you did
-    - What specific skills or keywords from the job description are missing from their resume
-    - Concrete steps they can take to reach an 80+ score
-    - Any strengths they already have that are worth highlighting
+    Evaluate the resume against these exact ATS criteria, organized by category:
     
-    Respond ONLY with valid JSON in this exact format:
+    LAYOUT
+    - single_column: Does the resume use a single-column layout? Multi-column layouts break ATS parsing.
+    - no_images_icons_graphics_tables: Are there zero images, icons, graphics, or tables? These cause parsing failures.
+    - no_hidden_text: Is there any hidden or white-on-white text used to game keyword matching?
+    
+    KEYWORDS
+    - exact_keyword_matching: Do the exact keywords from the job description appear verbatim in the resume? Synonyms do not count.
+    - keywords_in_context: Do keywords appear in Experience or Projects sections, not just listed in Skills?
+    
+    SECTIONS
+    - standard_section_headers: Does the resume use standard ATS-recognized headers?
+      (e.g. "Experience" or "Work Experience", "Education", "Skills", "Summary" or "Objective")
+      Creative headers like "My Journey" or "What I've Built" will fail ATS parsing.
+    - dedicated_skills_section: Is there a clearly labeled Skills section with relevant technical terms?
+    
+    FORMATTING
+    - consistent_date_format: Are all dates in a consistent format throughout? (e.g. MM/YYYY or Month YYYY, not mixed)
+    
+    For each check:
+    - Set "passed" to true or false
+    - Write a specific "notes" value addressing the candidate directly ("you"/"your") explaining what passed or exactly what needs to change
+    - Set the parent category "passed" to false if ANY child check within it fails
+    
+    Deduct points for each failed check. Be specific about what failed and why.
+    
+    Respond ONLY with valid JSON in this exact format, no extra text:
     {
       "score": <integer 0-100>,
-      "feedback": "<warm, direct, actionable feedback addressing the candidate as you>"
+      "sections": {
+        "layout": {
+          "passed": <boolean>,
+          "checks": {
+            "single_column":                   { "passed": <boolean>, "notes": "<feedback>" },
+            "no_images_icons_graphics_tables": { "passed": <boolean>, "notes": "<feedback>" },
+            "no_hidden_text":                  { "passed": <boolean>, "notes": "<feedback>" }
+          }
+        },
+        "keywords": {
+          "passed": <boolean>,
+          "checks": {
+            "exact_keyword_matching":          { "passed": <boolean>, "notes": "<feedback>" },
+            "keywords_in_context":             { "passed": <boolean>, "notes": "<feedback>" }
+          }
+        },
+        "sections": {
+          "passed": <boolean>,
+          "checks": {
+            "standard_section_headers":        { "passed": <boolean>, "notes": "<feedback>" },
+            "dedicated_skills_section":        { "passed": <boolean>, "notes": "<feedback>" }
+          }
+        },
+        "formatting": {
+          "passed": <boolean>,
+          "checks": {
+            "consistent_date_format":          { "passed": <boolean>, "notes": "<feedback>" }
+          }
+        }
+      }
     }
     
     Job Description:
