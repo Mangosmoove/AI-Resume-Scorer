@@ -110,7 +110,7 @@ const LandingView = () => {
                   placeholder="Paste the job description here..."
                   multiline
                   minRows={9}
-                  maxRows={9} //todo: fix height of box to match resume
+                  maxRows={9}
                   fullWidth
                   helperText={`${jd.length} chars`}
                   slotProps={{

@@ -1,73 +1,65 @@
-# React + TypeScript + Vite
+# BeatTheBot — Client
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A React front-end that helps job seekers "beat" Applicant Tracking Systems (ATS). Users upload their resume and paste a job description, and the app is designed to run an ATS-style scan that surfaces layout issues, keyword matches, section problems, and formatting red flags before they submit their application.
 
-Currently, two official plugins are available:
+> ⚠️ This is the client only. Result parsing/analysis logic is pending backend integration.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Tech Stack
 
-## React Compiler
+- **React 19** + **TypeScript**
+- **Vite 8** — dev server & build tooling
+- **Material UI (MUI) 9** (`@mui/material`, `@mui/icons-material`, `@emotion/react`, `@emotion/styled`) — form controls, buttons, theming
+- **Tailwind CSS 4** (via `@tailwindcss/vite`) — utility-first layout & styling, using CSS custom properties for theming
+- **lucide-react** — icon set
+- **axios** — HTTP client (for future API calls)
+- **ESLint** + **typescript-eslint** — linting
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Design System
 
-## Expanding the ESLint configuration
+The UI uses a "terminal / hacker" aesthetic:
+- Deep black background with neon matrix-green accents (defined via `oklch()` CSS variables in `style.css`)
+- `JetBrains Mono` monospace font throughout
+- Custom Tailwind utilities: `text-glow`, `border-glow`, `scanline`, `cursor-blink`, `flicker`
+- MUI theme (`theme.ts`) is kept in sync with the Tailwind CSS variables in `style.css` so MUI components (buttons, text fields) match the rest of the UI
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Getting Started
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+### Prerequisites
+- Node.js (a recent LTS version is recommended)
+- npm
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+### Installation
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### Development
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+Start the Vite dev server with hot module reloading:
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm run dev
+```
+
+### Build
+
+Type-check and build for production:
+
+```bash
+npm run build
+```
+
+### Preview
+
+Preview the production build locally:
+
+```bash
+npm run preview
+```
+
+### Lint
+
+```bash
+npm run lint
 ```
